@@ -1,5 +1,6 @@
-import { User, Briefcase, GraduationCap, Smile, Zap, MessageCircle, Lightbulb, Heart, Flame } from "lucide-react";
+import { User, Briefcase, GraduationCap, Smile, Zap, MessageCircle, Lightbulb, Heart, Flame, Hash } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Slider } from "@/components/ui/slider";
 
 interface PersonaCardProps {
   icon: React.ElementType;
@@ -61,6 +62,8 @@ interface RightSidebarProps {
   setSelectedPersona: (persona: string) => void;
   selectedTone: string;
   setSelectedTone: (tone: string) => void;
+  tweetCount: number;
+  setTweetCount: (count: number) => void;
 }
 
 const personas = [
@@ -82,6 +85,8 @@ export const RightSidebar = ({
   setSelectedPersona,
   selectedTone,
   setSelectedTone,
+  tweetCount,
+  setTweetCount,
 }: RightSidebarProps) => {
   return (
     <aside className="hidden xl:flex flex-col w-80 h-screen sticky top-0 border-l border-border bg-sidebar p-6 overflow-y-auto">
@@ -116,7 +121,7 @@ export const RightSidebar = ({
       </div>
 
       {/* Tones Section */}
-      <div>
+      <div className="mb-8">
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
           Tone
         </h3>
@@ -130,6 +135,34 @@ export const RightSidebar = ({
               onClick={() => setSelectedTone(tone.id)}
             />
           ))}
+        </div>
+      </div>
+
+      {/* Tweet Count Slider */}
+      <div>
+        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+          <div className="flex items-center gap-2">
+            <Hash className="w-4 h-4" />
+            Thread Length
+          </div>
+        </h3>
+        <div className="p-4 rounded-xl bg-card border border-border">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-sm text-muted-foreground">Number of tweets</span>
+            <span className="text-2xl font-bold text-primary">{tweetCount}</span>
+          </div>
+          <Slider
+            value={[tweetCount]}
+            onValueChange={(value) => setTweetCount(value[0])}
+            min={1}
+            max={10}
+            step={1}
+            className="w-full"
+          />
+          <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+            <span>1</span>
+            <span>10</span>
+          </div>
         </div>
       </div>
 
