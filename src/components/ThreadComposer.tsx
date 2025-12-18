@@ -100,7 +100,7 @@ export const ThreadComposer = ({ selectedPersona, selectedTone, tweetCount }: Th
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border p-4">
         <h1 className="text-xl font-bold">Thread Composer</h1>
-        <p className="text-xs text-muted-foreground mt-1">Powered by Grok AI</p>
+        <p className="text-xs text-muted-foreground mt-1">Powered by Gemini AI</p>
       </header>
 
       {/* Composer */}
@@ -210,7 +210,7 @@ export const ThreadComposer = ({ selectedPersona, selectedTone, tweetCount }: Th
           </div>
           <h2 className="text-xl font-bold mb-2">Create Your First Thread</h2>
           <p className="text-muted-foreground max-w-sm">
-            Enter a topic above and let Grok AI craft a viral-worthy thread tailored to your selected persona and tone.
+            Enter a topic above and let Gemini AI craft a viral-worthy thread tailored to your selected persona and tone.
           </p>
         </div>
       )}
