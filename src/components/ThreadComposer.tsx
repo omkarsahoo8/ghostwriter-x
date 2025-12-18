@@ -130,7 +130,7 @@ export const ThreadComposer = ({ selectedPersona, selectedTone }: ThreadComposer
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5" />
-                    Generate with Gemini
+                    Weave the Thread
                   </>
                 )}
               </Button>
