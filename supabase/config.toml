@@ -1,1 +1,4 @@
 project_id = "wwpejmqpgvpzieyvgriw"
+
+[functions.generate-thread]
+verify_jwt = false
