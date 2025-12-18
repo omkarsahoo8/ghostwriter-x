@@ -25,7 +25,7 @@ export const LeftSidebar = () => {
         <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
           <Sparkles className="w-6 h-6 text-primary" />
         </div>
-        <span className="text-xl font-bold text-gradient-primary">ThreadAI</span>
+        <span className="text-xl font-bold text-gradient-primary">Ghost-Scriber</span>
       </div>
 
       {/* Navigation */}
