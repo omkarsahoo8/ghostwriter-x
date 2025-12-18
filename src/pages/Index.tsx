@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 const Index = () => {
   const [selectedPersona, setSelectedPersona] = useState("professional");
   const [selectedTone, setSelectedTone] = useState("witty");
+  const [tweetCount, setTweetCount] = useState(5);
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,6 +33,8 @@ const Index = () => {
               setSelectedPersona={setSelectedPersona}
               selectedTone={selectedTone}
               setSelectedTone={setSelectedTone}
+              tweetCount={tweetCount}
+              setTweetCount={setTweetCount}
             />
           </SheetContent>
         </Sheet>
@@ -42,13 +45,16 @@ const Index = () => {
         <LeftSidebar />
         <ThreadComposer 
           selectedPersona={selectedPersona} 
-          selectedTone={selectedTone} 
+          selectedTone={selectedTone}
+          tweetCount={tweetCount}
         />
         <RightSidebar
           selectedPersona={selectedPersona}
           setSelectedPersona={setSelectedPersona}
           selectedTone={selectedTone}
           setSelectedTone={setSelectedTone}
+          tweetCount={tweetCount}
+          setTweetCount={setTweetCount}
         />
       </div>
     </div>
