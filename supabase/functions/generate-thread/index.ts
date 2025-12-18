@@ -55,9 +55,9 @@ serve(async (req) => {
       );
     }
 
-    const XAI_API_KEY = Deno.env.get('XAI_API_KEY');
-    if (!XAI_API_KEY) {
-      console.error('XAI_API_KEY not configured');
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      console.error('LOVABLE_API_KEY not configured');
       return new Response(
         JSON.stringify({ error: 'API key not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -116,35 +116,42 @@ Remember:
 - Each tweet under 280 characters
 - Strong hook in tweet 1
 - Hashtags only in the final tweet
-- Stay on topic and be constructive`;
+- Stay on topic and be constructive
 
-    console.log('Calling Grok API for thread generation:', { persona, tone, tweetCount, topicPreview: topic.substring(0, 30) });
+Output ONLY the tweets, one per paragraph, separated by blank lines. Do not include tweet numbers or labels.`;
 
-    const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    console.log('Calling Gemini API for thread generation:', { persona, tone, tweetCount, topicPreview: topic.substring(0, 30) });
+
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${XAI_API_KEY}`,
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'grok-3-latest',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        temperature: 0.8,
-        max_tokens: 2000,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Grok API error:', response.status, errorText);
+      console.error('Gemini API error:', response.status, errorText);
       
       if (response.status === 429) {
         return new Response(
           JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }),
           { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      if (response.status === 402) {
+        return new Response(
+          JSON.stringify({ error: 'AI credits exhausted. Please add credits to continue.' }),
+          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
       
@@ -158,7 +165,7 @@ Remember:
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
-      console.error('No content in Grok response:', data);
+      console.error('No content in Gemini response:', data);
       return new Response(
         JSON.stringify({ error: 'No content generated' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -169,7 +176,7 @@ Remember:
     const tweets = content
       .split(/\n\n+/)
       .map((t: string) => t.trim())
-      .filter((t: string) => t.length > 0 && t.length <= 350) // Allow some buffer
+      .filter((t: string) => t.length > 0 && t.length <= 350)
       .map((t: string) => t.replace(/^(\d+[.)\/:]\s*|Tweet\s*\d+[.:]\s*)/i, '').trim())
       .filter((t: string) => t.length > 10);
 
